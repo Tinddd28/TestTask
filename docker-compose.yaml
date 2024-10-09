@@ -1,0 +1,43 @@
+
+services:
+  postgres:
+    image: postgres:16.4-alpine3.20
+    container_name: test_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+        - test
+
+  pgadmin:
+    container_name: test_pgadmin
+    image: dpage/pgadmin4:8.1
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "models@mail.ru"
+      PGADMIN_DEFAULT_PASSWORD: "12345678"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      - test
+
+volumes:
+    pgadmin-data:
+    db:
+
+networks:
+  test:
+    driver: bridge
