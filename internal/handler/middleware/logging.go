@@ -1,29 +1,24 @@
 package middleware
 
 import (
+	"github.com/gin-gonic/gin"
 	"log/slog"
-	"net/http"
 	"time"
 )
 
-type wrappedWriter struct {
-	http.ResponseWriter
-	statusCode int
-}
-
-func Logging(next http.Handler, logger *slog.Logger) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+func LoggingMiddleware(logger *slog.Logger) gin.HandlerFunc {
+	return func(c *gin.Context) {
 		start := time.Now()
 
-		wrapped := &wrappedWriter{
-			ResponseWriter: w,
-			statusCode:     http.StatusOK,
-		}
-		next.ServeHTTP(wrapped, r)
+		c.Next()
+
+		duration := time.Since(start)
+		statusCode := c.Writer.Status()
+
 		logger.Info("Request",
-			"status", wrapped.statusCode,
-			"method", r.Method,
-			"path", r.URL.Path,
-			"duration", time.Since(start))
-	})
+			"status", statusCode,
+			"method", c.Request.Method,
+			"path", c.Request.URL.Path,
+			"duration", duration)
+	}
 }

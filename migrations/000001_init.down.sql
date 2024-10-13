@@ -1,6 +1,6 @@
 drop index "idx_song_id";
-drop index "idx_song";
-drop index "idx_group";
+drop index "id_song_name";
+drop index "idx_group_name";
 drop index "idx_release_date";
 alter table "verses"
     drop constraint "fk_song_id";

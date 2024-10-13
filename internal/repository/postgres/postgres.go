@@ -8,7 +8,9 @@ import (
 )
 
 const (
-	songTable = "songs"
+	songTable   = "songs"
+	limitSong   = 10
+	versesTable = "verses"
 )
 
 func NewPostgres(cfg config.Config) (*pgxpool.Pool, error) {

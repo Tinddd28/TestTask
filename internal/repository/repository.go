@@ -7,11 +7,12 @@ import (
 )
 
 type Song interface {
-	GetAllSongs(offset int) ([]models.Song, error)
-	GetSong(id int) (models.ResponseSong, error)
+	GetAllSongs(group, songF, startDate, endDate string, offset int) ([]models.Song, error)
+	GetSong(id, page, pageSize int) ([]models.Verse, error)
 	DeleteSong(id int) error
 	UpdateSong(id int, song models.Song) error
-	CreateSong(song models.RequestSong) (int, error)
+	CreateSong(song models.InsertSongDb) (int, error)
+	CreateVerse(id int, text string, num int) error
 }
 
 type Repository struct {

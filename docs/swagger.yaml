@@ -1,0 +1,207 @@
+basePath: /
+definitions:
+  models.RequestSong:
+    properties:
+      group:
+        type: string
+      name:
+        type: string
+    type: object
+  models.Song:
+    properties:
+      group:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      name:
+        type: string
+      releaseDate:
+        type: string
+    type: object
+  models.Verse:
+    properties:
+      id:
+        type: integer
+      text:
+        type: string
+    type: object
+host: 0.0.0.0:52352
+info:
+  contact: {}
+  description: This is a simple API for songs and verses
+  title: TestTask API
+  version: "1"
+paths:
+  /song:
+    delete:
+      consumes:
+      - application/json
+      description: Delete song
+      parameters:
+      - description: Song id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete song
+      tags:
+      - songs
+    get:
+      consumes:
+      - application/json
+      description: Get song
+      parameters:
+      - description: Song id
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Verse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get song
+      tags:
+      - songs
+    post:
+      consumes:
+      - application/json
+      description: Create song
+      parameters:
+      - description: Song info
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/models.RequestSong'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create song
+      tags:
+      - songs
+    put:
+      consumes:
+      - application/json
+      description: Update song
+      parameters:
+      - description: Song id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update song
+      tags:
+      - songs
+  /songs:
+    get:
+      consumes:
+      - application/json
+      description: Get all songs
+      parameters:
+      - description: Group name
+        in: query
+        name: group
+        type: string
+      - description: Song name
+        in: query
+        name: song
+        type: string
+      - description: Start date
+        in: query
+        name: startDate
+        type: string
+      - description: End date
+        in: query
+        name: endDate
+        type: string
+      - description: Page number
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Song'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all songs
+      tags:
+      - songs
+swagger: "2.0"
